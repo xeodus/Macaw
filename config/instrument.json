@@ -1,0 +1,16 @@
+{
+    "instruments": [
+        {
+            "symbol": "AAPL",
+            "type": "equity",
+            "price": 150.00,
+            "volatility": 0.02
+        },
+        {
+            "symbol": "EURUSD",
+            "type": "forex",
+            "price": 1.10,
+            "volatility": 0.0005
+        }
+    ]
+}
