@@ -8,7 +8,7 @@ namespace market_data {
 
         class ConfigLoader {
         public:
-            std::map<std::string, Instrument> load_config(std::string& config_path);
+            std::map<std::string, Instrument> load_config(const std::string& config_path);
         };
     }
 }

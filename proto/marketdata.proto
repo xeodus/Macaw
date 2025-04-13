@@ -4,7 +4,7 @@ package market_data;
 // Bidirectional streaming RPC for market data
 
 service MarketDataService {
-    rpc StreamMarketData(StreamRequest) return (stream MarketData);
+    rpc StreamMarketData(stream MarketDataRequest) returns (stream MarketDataResponse) {};
 }
 
 message MarketRequest {

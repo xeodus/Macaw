@@ -36,6 +36,6 @@ namespace market_data {
         SnapshotCallback snapshot_callback_;
         UpdateCallback update_callback_;
         ConnectionCallback connection_callback_;
-        bool is_connected_;
+        bool connected_;
     };
 }
