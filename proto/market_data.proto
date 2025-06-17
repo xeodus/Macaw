@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package market_simulator;
+
+message Instrument {
+  int32 id = 1;
+  string symbol = 2;
+}
+
+message ConfigRequest {} // empty
+
+message ConfigResponse {
+  repeated Instrument instruments = 1;
+}
+
+message Subscription {
+  enum Action { SUBSCRIBE = 0; UNSUBSCRIBE = 1; }
+  Action action = 1;
+  int32 instrument_id = 2;
+}
+
+message OrderLevel {
+  double price = 1;
+  uint32 size = 2;
+}
+
+message Snapshot {
+  int32 instrument_id = 1;
+  repeated OrderLevel bids = 2;
+  repeated OrderLevel asks = 3;
+}
+
+message Incremental {
+  int32 instrument_id = 1;
+  enum UpdateType { ADD = 0; MODIFY = 1; REMOVE = 2; }
+  UpdateType type = 2;
+  OrderLevel level = 3;
+}
+
+message StreamRequest {
+  oneof req { Subscription sub = 1; }
+}
+
+message StreamResponse {
+  oneof resp { Snapshot snap = 1; Incremental inc = 2; }
+}
+
+service MarketData {
+  rpc GetConfig(ConfigRequest) returns (ConfigResponse);
+  rpc StreamData(stream StreamRequest) returns (stream StreamResponse);
+}
+
