@@ -73,3 +73,14 @@ If you are on MacOS, you can simply use:
 
     which grpc_cpp_plugin
 ```
+
+Now, finally to build and run the program:
+
+```bash
+    mkdir build && cd build
+    cmake .. -DCMAKE_BUILD_TYPE=Release
+    cmake --build .
+```
+Cheers 🍻
+
+Project under development..
