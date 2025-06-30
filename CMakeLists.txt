@@ -65,6 +65,11 @@ add_custom_command(
 
 add_custom_target(generate_proto DEPENDS ${PROTO_SRCS} ${PROTO_HDRS})
 
+# Find packages - this is the key fix
+find_package(gRPC CONFIG REQUIRED)
+find_package(Protobuf CONFIG REQUIRED)
+find_package(absl CONFIG REQUIRED)
+
 # Build proto library
 add_library(proto STATIC ${PROTO_SRCS})
 add_dependencies(proto generate_proto)
@@ -73,6 +78,22 @@ target_include_directories(proto PUBLIC
     ${GENERATED_DIR}
     ${PROTO_SRC_DIR}
     ${HOMEBREW_PREFIX}/include
+)
+
+# Fixed linking - use proper CMake targets
+target_link_libraries(proto
+    PUBLIC
+        gRPC::grpc++
+        gRPC::grpc
+        protobuf::libprotobuf
+        absl::log
+        absl::log_internal_message
+        absl::log_internal_check_op
+        absl::strings
+        absl::cord
+        absl::synchronization
+        absl::base
+        absl::memory
 )
 
 # Server target

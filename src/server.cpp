@@ -32,9 +32,13 @@ public:
 int main() {
     std::vector<int> ids = {1};
     std::vector<int> depths = {5};
+    constexpr double HORIZON_SECONDS = 1.0;
+    constexpr double SNAPSHOT_INTERVAL = 0.2;
 
     Simulator simulator(ids, depths);
-    std::thread simulatorThread(&Simulator::run, &simulator);
+    std::thread simulatorThread([&simulator]() {
+        simulator.run(HORIZON_SECONDS, SNAPSHOT_INTERVAL);
+    });
     std::string serverAddress("0.0.0.0:50051");
     MarketDataServiceImpl service;
 
