@@ -4,7 +4,7 @@ project(MarketDataSim LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Use absolute paths for everything
+# Using absolute paths for everything
 set(HOMEBREW_PREFIX "/opt/homebrew")
 set(PROTOC_PATH "${HOMEBREW_PREFIX}/bin/protoc")
 set(GRPC_CPP_PLUGIN_PATH "${HOMEBREW_PREFIX}/bin/grpc_cpp_plugin")
@@ -12,7 +12,7 @@ set(GRPC_CPP_PLUGIN_PATH "${HOMEBREW_PREFIX}/bin/grpc_cpp_plugin")
 include_directories(${HOMEBREW_PREFIX}/include)
 include_directories(SYSTEM ${HOMEBREW_PREFIX}/include)
 
-# Verify tools exist
+# Verifying tools
 if(NOT EXISTS "${PROTOC_PATH}")
     message(FATAL_ERROR "protoc not found at: ${PROTOC_PATH}")
 endif()
@@ -40,7 +40,7 @@ set(PROTO_HDRS
     "${GENERATED_DIR}/market_data.grpc.pb.h"
 )
 
-# Generate protobuf and gRPC code using a script
+# Generating protobuf and gRPC code using a script
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/generate_proto.sh"
 "#!/bin/bash
 \"${PROTOC_PATH}\" \\
@@ -51,10 +51,10 @@ file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/generate_proto.sh"
     \"${PROTO_FILE}\"
 ")
 
-# Make the script executable
+# Making the script executable
 execute_process(COMMAND chmod +x "${CMAKE_CURRENT_BINARY_DIR}/generate_proto.sh")
 
-# Custom command to generate proto files
+# Generate protoc files
 add_custom_command(
   OUTPUT ${PROTO_SRCS} ${PROTO_HDRS}
   COMMAND "${CMAKE_CURRENT_BINARY_DIR}/generate_proto.sh"
@@ -65,7 +65,7 @@ add_custom_command(
 
 add_custom_target(generate_proto DEPENDS ${PROTO_SRCS} ${PROTO_HDRS})
 
-# Find packages - this is the key fix
+# Find packages
 find_package(gRPC CONFIG REQUIRED)
 find_package(Protobuf CONFIG REQUIRED)
 find_package(absl CONFIG REQUIRED)
@@ -80,7 +80,6 @@ target_include_directories(proto PUBLIC
     ${HOMEBREW_PREFIX}/include
 )
 
-# Fixed linking - use proper CMake targets
 target_link_libraries(proto
     PUBLIC
         gRPC::grpc++
